@@ -41,3 +41,12 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+
+export interface Competition {
+    id: number;
+    name: string;
+    type: string;
+    country: string;
+    api_id: number;
+}

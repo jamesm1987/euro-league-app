@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CompetitionController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -12,6 +13,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 });
+
+Route::resource('competitions', CompetitionController::class);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

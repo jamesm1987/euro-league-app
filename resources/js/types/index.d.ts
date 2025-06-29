@@ -39,14 +39,28 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
-    [key: string]: unknown; // This allows for additional properties...
+    [key: string]: unknown;
 }
 
+export type Competition = {
+    id: number
+    name: string
+    type: string
+    country: string
+    api_id: number
+}
 
-export interface Competition {
-    id: number;
-    name: string;
-    type: string;
-    country: string;
-    api_id: number;
+export type Team = {
+    id: number
+    name: string
+    competition: string
+    price: number
+    api_id: number
+}
+
+export type Import = {
+    id: number
+    type: string
+    status: string
+    response: string
 }

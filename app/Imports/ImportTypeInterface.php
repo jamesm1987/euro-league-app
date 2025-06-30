@@ -27,5 +27,5 @@ interface ImportTypeInterface
      * @param mixed $data
      * @return void
      */
-    public function transform($data): void;    
+    public function transform($data);
 }

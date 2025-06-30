@@ -36,14 +36,14 @@ class FootballDataApiClient
                 'x-rapidapi-key' => $this->apiKey,
             ])->get($url, $params);
 
-            Log::info("API TEST RESPONSE", print_r($response));
 
             if ($response->failed()) {
                 logger()->error("API call failed for {$url}", ['response' => $response->body()]);
                 return null;
             }
+        
 
-            return $response;
+            return $response->json();
 
         } catch (Exception $e) {
             return '';
@@ -51,17 +51,26 @@ class FootballDataApiClient
          
     }
 
-    public function getTeams($leagues = []){
+    
+   public function getTeams($leagues)
+   {
+        $teams = [];
 
-        foreach ($leagues as $api_id) {
-            
-            $teams = $this->call('teams', [
-                    'season' => $this->season,
-                    'league_id' => $api_id
-                ]);
+        foreach ($leagues as $league) {
+            $response = $this->call('teams', [
+                'season' => $this->season,
+                'league' => $league->api_id
+            ]);
 
-            return $teams;
+            if (isset($response['response']) && is_array($response['response'])) {
+                foreach ($response['response'] as $team) {
+                    $team['league_id'] = $league->id;
+                    $teams[] = $team;
+                }
+            }
         }
+
+        return $teams;
     }
 
     public function getFixtures(){}

@@ -12,6 +12,7 @@ class FootballDataApiClient
     public $host;
     public $apiKey;
     public $baseUrl;
+    public $season;
 
     public function __construct()
     {

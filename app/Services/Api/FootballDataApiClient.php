@@ -53,26 +53,27 @@ class FootballDataApiClient
     }
 
     
-   public function getTeams($leagues)
-   {
-        $teams = [];
+public function getTeams($leagues)
+{
+    $teams = [];
 
-        foreach ($leagues as $league) {
-            $response = $this->call('teams', [
-                'season' => $this->season,
-                'league' => $league->api_id
-            ]);
+    foreach ($leagues as $league) {
+        $apiResponse = $this->call('teams', [
+            'season' => $this->season,
+            'league' => $league->api_id
+        ]);
 
-            if (isset($response['response']) && is_array($response['response'])) {
-                foreach ($response['response'] as $team) {
-                    $team['league_id'] = $league->id;
-                    $teams[] = $team;
-                }
+
+        if (isset($apiResponse['response']) && is_array($apiResponse['response'])) {
+            foreach ($apiResponse['response'] as $team) {
+                $team['league_id'] = $league->id;
+                $teams[] = $team;
             }
         }
-
-        return $teams;
     }
+
+    return $teams;
+}
 
     public function getFixtures(){}
 

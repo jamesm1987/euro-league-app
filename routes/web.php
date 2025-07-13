@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CompetitionController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\ImportController;
+
+use App\Http\Controllers\TeamPickerController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -14,6 +16,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    Route::get('team-picker', [TeamPickerController::class, 'index']);
 });
 
 

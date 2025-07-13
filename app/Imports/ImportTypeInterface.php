@@ -9,9 +9,9 @@ interface ImportTypeInterface
      * Fetch data for import based on parameters.
      *
      * @param array $params
-     * @return mixed
+     * @return array
      */
-    public function fetch();
+    public function fetch(): array;
 
     /**
      * Process the fetched data.
@@ -25,7 +25,7 @@ interface ImportTypeInterface
      * Transform the fetched data.
      *
      * @param mixed $data
-     * @return void
+     * @return array
      */
-    public function transform($data);
+    public function transform(array $data): array;
 }

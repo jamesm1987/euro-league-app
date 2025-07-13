@@ -2,8 +2,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { Link, Head, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-import { type Team } from '@/types';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, Team } from '@/types';
 import { columns } from './columns'
 import { DataTable } from '@/components/ui/data-table'
 

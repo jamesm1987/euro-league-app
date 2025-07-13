@@ -56,6 +56,7 @@ export type Team = {
     competition: string
     price: number
     api_id: number
+    league: string
 }
 
 export type Import = {

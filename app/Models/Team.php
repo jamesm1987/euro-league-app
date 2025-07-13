@@ -16,7 +16,7 @@ class Team extends Model
 
     public function league()
     {
-        return $this->belongsTo(Competition::class, 'league_id');
+        return $this->belongsTo(Competition::class, 'competition_id');
     }
 
     protected function displayName(): Attribute

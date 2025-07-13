@@ -27,8 +27,9 @@ class ImportJob implements ShouldQueue
     public function handle(): void
     {
         $response = $this->importer->fetch();
-        $this->importer->transform($response, function($data) use($reponse){
-            $this->importer->process($data);
-        });
+
+        $data = $this->importer->transform($response);
+        $this->importer->process($data);
+
     }
 }

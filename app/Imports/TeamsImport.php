@@ -17,7 +17,7 @@ class TeamsImport implements ImportTypeInterface
         $this->apiService = $footballDataApiClient;
     }
 
-    public function fetch()
+    public function fetch(): array
     {
 
         $leagues = Competition::where('type', 'league')
@@ -38,16 +38,17 @@ class TeamsImport implements ImportTypeInterface
         }
     }
 
-    public function transform($data)
+    public function transform(array $data): array
     {
-        return collect($data['response'] ?? [])->map(function ($entry) {
-        
+        return collect($data)->map(function ($entry) {
             $team = $entry['team'] ?? [];
 
-        return [
-            'api_id' => $team['id'],
-                'name' => $team['name'],
+            return [
+                'api_id' => $team['id'] ?? null,
+                'name' => $team['name'] ?? null,
             ];
+        })->filter(function ($item) {
+            return !is_null($item['api_id']) && !is_null($item['name']);
         })->toArray();
     }
 }

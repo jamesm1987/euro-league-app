@@ -20,8 +20,13 @@ class TeamPickerController extends Controller
     public function index(Request $request)
     {
 
-        $teams = TeamResource::collection(Team::with('league')->get());
-        $leagues = Competition::where('type', 'league')->get();
+        $teams = TeamResource::collection(
+            Team::with('league')->get()
+        )->resolve();
+
+        $leagues = Competition::where('type', 'league')
+            ->get(['id', 'name'])
+            ->toArray();
         
         return Inertia::render('teams-picker', [
             'teams' => $teams,

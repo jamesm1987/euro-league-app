@@ -53,10 +53,9 @@ export type Competition = {
 export type Team = {
     id: number
     name: string
-    competition: string
+    league: string
     price: number
     api_id: number
-    league: string
 }
 
 export type Import = {
@@ -64,4 +63,14 @@ export type Import = {
     type: string
     status: string
     response: string
+}
+
+export type GameRule = {
+    id: number
+    key: string
+    description: string
+    context: string
+    points: number
+    conditions: json
+    active: boolean
 }

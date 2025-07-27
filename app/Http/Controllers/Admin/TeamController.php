@@ -6,6 +6,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Team;
+use App\Models\Competition;
+use App\Http\Resources\TeamResource;
+use App\Http\Resources\LeagueResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -17,16 +20,18 @@ class TeamController extends Controller
     public function index(Request $request)
     {
 
-        $query = Team::query();
+        $leagues = LeagueResource::collection(Competition::where('type', 'league')->get());
+        $teams = TeamResource::collection(Team::with('league')->get());
 
-        if ($request->filled('type')) {
-            $query->where('type', $request->input('type'));
+        if ($request->filled('league')) {
+           $filtered = TeamResource::collection(
+                Team::inLeague($request->input('league'))->with('league')->get()
+            );
         }
 
-
-
         return Inertia::render('Admin/Team/Index', [
-            'teams' => $query->get(),
+            'leagues' => $leagues,
+            'teams' =>  $filtered ?? $teams,
             'filters' => $request->only('type'),
         ]);
     }
@@ -40,6 +45,17 @@ class TeamController extends Controller
             'team' => $team,
         ]);
     }
+
+    /**
+     * Display the user's profile form.
+     */
+    public function show(Team $team): Response
+    {
+        return Inertia::render('Admin/Team/Show', [
+            'team' => $team,
+        ]);
+    }
+
 
     /**
      * Update the competition information.

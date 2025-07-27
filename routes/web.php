@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CompetitionController;
 use App\Http\Controllers\Admin\TeamController;
+use App\Http\Controllers\Admin\GameRuleController;
 use App\Http\Controllers\Admin\ImportController;
 
 use App\Http\Controllers\TeamPickerController;
@@ -26,6 +27,7 @@ Route::prefix('admin')
     ->name('admin.')
     ->middleware(['auth'])
     ->group(function () {
+        Route::resource('settings/rules', GameRuleController::class);
         Route::resource('competitions', CompetitionController::class);
         Route::resource('teams', TeamController::class);
         Route::get('/import', [ImportController::class, 'index'])->name('imports.index');

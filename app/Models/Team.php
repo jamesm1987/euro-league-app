@@ -25,4 +25,9 @@ class Team extends Model
             get: fn () => $this->display_name ?? $this->name
         );
     }
+
+    public function scopeInLeague($query, string $slug)
+    {
+        return $query->whereHas('league', fn($q) => $q->where('slug', $slug));
+    }
 }

@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('competitions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
             $table->enum('type', ['league', 'cup'])->default('league');
             $table->string('country')->nullable();
+            $table->foreignId('team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->unsignedInteger('api_id');
             $table->timestamps();
         });

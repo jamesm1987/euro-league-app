@@ -14,6 +14,8 @@ class Team extends Model
         'league_id'
     ];
 
+    protected $appends = ['formatted_price'];
+    
     public function league()
     {
         return $this->belongsTo(Competition::class, 'competition_id');
@@ -26,8 +28,21 @@ class Team extends Model
         );
     }
 
+    protected function formattedPrice(): Attribute
+
+    {
+
+        return Attribute::make(
+
+            get: fn () => "£{$this->price}m",
+
+        );
+
+    }
+
     public function scopeInLeague($query, string $slug)
     {
         return $query->whereHas('league', fn($q) => $q->where('slug', $slug));
     }
+
 }

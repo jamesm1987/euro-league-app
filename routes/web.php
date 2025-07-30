@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CompetitionController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\GameRuleController;
 use App\Http\Controllers\Admin\ImportController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 
 use App\Http\Controllers\TeamPickerController;
 use Inertia\Inertia;
@@ -32,6 +33,7 @@ Route::prefix('admin')
         Route::resource('teams', TeamController::class);
         Route::get('/import', [ImportController::class, 'index'])->name('imports.index');
         Route::post('/import', [ImportController::class, 'submit'])->name('imports.submit');
+        Route::get('/', [AdminDashboard::class, 'index'])->name('dashboard');
     });
 
 require __DIR__.'/settings.php';

@@ -32,6 +32,10 @@ export const columns = ({
     accessorKey: "league",
     header: "League",
   },
+    {
+    accessorKey: "formatted_price",
+    header: "Price",
+  },
   {
     accessorKey: "api_id",
     header: "API ID",

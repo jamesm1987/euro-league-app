@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('key')->unique();
             $table->enum('context', ['result_points', 'score_points', 'goalscorer_points', 'trophy_points']);
             $table->string('description')->nullable();
+            $table->integer('margin')->nullable();
             $table->integer('points');
             $table->boolean('active')->default(1);
             $table->timestamps();

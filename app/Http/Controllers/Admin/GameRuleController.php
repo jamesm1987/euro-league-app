@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Requests\Admin\GameRules\CreateGameRule;
+use App\Http\Requests\Admin\GameRules\UpdateGameRule;
 
 class GameRuleController extends Controller
 {
@@ -26,45 +28,47 @@ class GameRuleController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(CreateGameRule $request)
     {
-        dd($request);
+        $validated = $request->validated();
+
+        $rule = GameRule::create($validated);
+
+        return Redirect::route('admin.rules.index', $rule)
+            ->with('success', 'Rule created successfully.');
     }
 
     /**
      * Display the user's profile form.
      */
-    public function edit(Competition $competition): Response
+    public function edit(GameRule $rule): Response
     {
-        return Inertia::render('Admin/Competition/Edit', [
-            'competition' => $competition,
+        return Inertia::render('Admin/GameRule/Edit', [
+            'rule' => $rule,
         ]);
     }
 
     /**
-     * Update the competition information.
+     * Update the game rule.
      */
-    public function update(Request $request, Competition $competition): RedirectResponse
+    public function update(UpdateGameRule $request, GameRule $rule): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            // add other competition fields and validation here
-        ]);
+        $validated = $request->validated();
         
-        $competition->update($validated);
+        $rule->update($validated);
 
-        return Redirect::route('admin.competitions.edit', $competition)
-            ->with('success', 'Competition updated successfully.');
+        return Redirect::route('admin.rules.index', $rule)
+            ->with('success', 'Rule updated successfully.');
     }
 
     /**
      * Delete the user's account.
      */
-    public function destroy(Competition $competition): RedirectResponse
+    public function destroy(GameRule $rule): RedirectResponse
     {
-        $competition->delete();
+        $rule->delete();
 
-        return Redirect::route('admin.competitions.index')
-            ->with('success', 'Competition deleted successfully.');
+        return Redirect::route('admin.rules.index')
+            ->with('success', 'Rule deleted successfully.');
     }
 }

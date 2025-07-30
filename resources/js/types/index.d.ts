@@ -55,6 +55,7 @@ export type Team = {
     name: string
     league: string
     price: number
+    formatted_price: string
     api_id: number
 }
 
@@ -70,7 +71,7 @@ export type GameRule = {
     key: string
     description: string
     context: string
+    margin: number
     points: number
-    conditions: json
     active: boolean
 }

@@ -11,12 +11,11 @@ class GameRule extends Model
         'key', 
         'description', 
         'points', 
-        'conditions', 
+        'context', 
         'active'
     ];
     
     protected $casts = [
-        'conditions' => 'array',
         'active' => 'boolean',
     ];
 }

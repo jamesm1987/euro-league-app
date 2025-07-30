@@ -6,7 +6,6 @@ import  useMediaQuery from "@/hooks/use-media-query";
 
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import ConditionsBuilder from "@/components/ui/conditions-builder";
 import {
   Dialog, DialogContent, DialogDescription, DialogHeader,
   DialogTitle, DialogTrigger,
@@ -22,14 +21,15 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 
 export function CreateGameRuleModal() {
   const [open, setOpen] = React.useState(false)
-  const [key, setKey] = React.useState("")
-  const [description, setDescription] = React.useState("")
-  const [context, setContext] = React.useState("")
-  const [points, setPoints] = React.useState("")
-  const [conditions, setConditions] = React.useState([])
-  const [active, setActive] = React.useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
+  const [formData, setFormData] = React.useState({
+    key: "",
+    context: "",
+    margin: "",
+    points: "",
+    active: false
 
+  });
 
   const contexts = [
     'result_points',
@@ -38,20 +38,21 @@ export function CreateGameRuleModal() {
     'trophy_points'
   ];
 
-  const handleConditionsChange = (conds: any) => {
-    console.log("New Conditions JSON:", conds)
-    // Save via Inertia POST/PATCH or form context
-  }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, type, checked, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    router.post("/admin/settings/rules", { key }, {
+    router.post("/admin/settings/rules", formData, {
       onSuccess: () => {
         setOpen(false)
-        setKey("")
-        setDescription("")
-        setContext("")
+        setFormData({key: "", description: "", context: "", margin: "", points: "", active: false})
         // Optionally redirect to edit page if backend returns `user.id`
         // router.visit(`/users/${newUserId}/edit`)
       },
@@ -64,62 +65,77 @@ export function CreateGameRuleModal() {
         <Label htmlFor="name">Key</Label>
         <Input
           id="key"
-          value={key}
-          onChange={(e) => setKey(e.target.value)}
+          name="key"
+          value={formData.key}
+          onChange={handleChange}
           required
         />
-      </div>
-      <div className="grid gap-3">
-        <Label htmlFor="name">Type</Label>
-        <Select id="type"
-        value={context || ""}
-        onValueChange={(value) => {
-            setContext(value)
-        }}
-        >
-        <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Select context" />
-            </SelectTrigger>
-            <SelectContent>
-            {contexts.map((context, id) => (
-                <SelectItem key={id} value={context}>
-                {context}
-                </SelectItem>
-            ))}
-            </SelectContent>
-        </Select>
       </div>
       <div className="grid gap-3">
         <Label htmlFor="description">Description</Label>
         <Textarea
           id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
           required
         />
-      </div>   
+      </div>
+      <div className="grid gap-3">
+        <Label htmlFor="type">Type</Label>
+        <Select id="type"
+        name="context"
+        value={formData.context}
+        onValueChange={( value ) => 
+          setFormData((prev) => ({ ...prev, context: value }))
+        }
+        >
+        <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Select context" />
+            </SelectTrigger>
+            <SelectContent>
+            {contexts.map((ctx, id) => (
+                <SelectItem key={id} value={ctx}>
+                  {ctx}
+                </SelectItem>
+            ))}
+            </SelectContent>
+        </Select>
+      </div>
+
+     {formData.context === "score_points" && (
+        <div className="grid gap-3">
+          <Label htmlFor="margin">Margin</Label>
+          <Input
+            id="margin"
+            name="margin"
+            value={formData.margin}
+            type="number"
+            onChange={handleChange}
+            required
+          />
+        </div>
+      )}  
 
       <div className="grid gap-3">
         <Label htmlFor="points">Points</Label>
         <Input
           id="points"
-          value={points}
-          onChange={(e) => setPoints(e.target.value)}
+          name="points"
+          value={formData.points}
+          onChange={handleChange}
           required
         />
-      </div> 
-
-      <div className="grid gap-3">
-        <Label htmlFor="conditions">Condtions</Label>
-          <ConditionsBuilder onChange={handleConditionsChange} />
-      </div>       
+      </div>   
 
       <div className="grid gap-3">
         <Label htmlFor="active">Active</Label>
 
         <Switch
-            checked={active}
-            onCheckedChange={(e) => setActive(!active)}
+            checked={formData.active}
+            onCheckedChange={(value) => 
+              setFormData((prev) => ({ ...prev, active: value}))
+            }
           />
       </div>            
       <Button type="submit">Create</Button>

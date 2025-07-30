@@ -1,0 +1,15 @@
+INSERT INTO `game_rules` (`id`, `key`, `context`, `description`, `margin`, `points`, `active`, `created_at`, `updated_at`) VALUES
+(1, 'win', 'result_points', 'Home team or Away team win', NULL, 3, 1, '2025-07-30 15:36:23', '2025-07-30 15:36:23'),
+(2, 'draw', 'result_points', 'Match is a draw', NULL, 1, 1, '2025-07-30 15:37:18', '2025-07-30 15:37:18'),
+(3, 'home_win', 'score_points', 'Home team win by 3+ goals', NULL, 1, 1, '2025-07-30 15:39:10', '2025-07-30 15:39:10'),
+(4, 'away_win', 'score_points', 'Away win by 3+ goals', NULL, 2, 1, '2025-07-30 15:49:08', '2025-07-30 15:49:08'),
+(5, 'home_defeat', 'score_points', 'Home defeat by 3+ goals', NULL, -2, 1, '2025-07-30 15:49:35', '2025-07-30 15:49:35'),
+(6, 'away_defeat', 'score_points', 'Away defeat by 3+ goals', NULL, -1, 1, '2025-07-30 15:49:58', '2025-07-30 15:49:58'),
+(7, 'champions_league', 'trophy_points', 'Champions league winner', NULL, 40, 1, '2025-07-30 15:51:11', '2025-07-30 15:51:11'),
+(8, 'league_win', 'trophy_points', 'Domestic League winner', NULL, 20, 1, '2025-07-30 16:01:53', '2025-07-30 16:01:53'),
+(9, 'cup_win', 'trophy_points', 'Domestic Cup Winner', NULL, 10, 1, '2025-07-30 16:02:21', '2025-07-30 16:02:21'),
+(10, 'europa_league', 'trophy_points', 'Europa League Winner', NULL, 15, 1, '2025-07-30 16:02:50', '2025-07-30 16:02:50'),
+(11, 'europa_conference', 'trophy_points', 'Europa Conference Winner', NULL, 10, 1, '2025-07-30 16:03:17', '2025-07-30 16:03:17'),
+(12, 'league_top_scorer', 'goalscorer_points', 'Team has league\'s higest scorer', NULL, 15, 1, '2025-07-30 16:04:16', '2025-07-30 16:04:16'),
+(13, 'league_second_top_scorer', 'goalscorer_points', 'Team has league\'s 2nd highest scorer', NULL, 10, 1, '2025-07-30 16:04:53', '2025-07-30 16:04:53'),
+(14, 'league_third_top_scorer', 'goalscorer_points', 'Team has league\'s 3rd highest scorer', NULL, 5, 1, '2025-07-30 16:05:34', '2025-07-30 16:05:34');

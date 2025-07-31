@@ -1,5 +1,5 @@
 
-import AppLayout from '@/layouts/app-layout';
+import AdminLayout from '@/layouts/admin-layout';
 import { Link, Head, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { type GameRule } from '@/types';
@@ -24,7 +24,7 @@ export default function Index({ rules }: Props) {
 
     
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AdminLayout breadcrumbs={breadcrumbs}>
 
             <div className="py-12">
                 <Head title="Game Rules" />
@@ -37,6 +37,6 @@ export default function Index({ rules }: Props) {
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </AdminLayout>
     );
 }

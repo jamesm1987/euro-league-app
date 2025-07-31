@@ -54,6 +54,7 @@ export type Team = {
     id: number
     name: string
     league: string
+    country: string
     price: number
     formatted_price: string
     api_id: number

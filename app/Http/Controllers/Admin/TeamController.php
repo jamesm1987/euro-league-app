@@ -51,6 +51,7 @@ class TeamController extends Controller
      */
     public function show(Team $team): Response
     {
+        $team = new TeamResource($team);
         return Inertia::render('Admin/Team/Show', [
             'team' => $team,
         ]);

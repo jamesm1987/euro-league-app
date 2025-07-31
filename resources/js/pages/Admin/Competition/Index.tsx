@@ -1,5 +1,5 @@
 
-import AppLayout from '@/layouts/app-layout';
+import AdminLayout from '@/layouts/admin-layout';
 import { Link, Head, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { type Competition } from '@/types';
@@ -31,7 +31,7 @@ export default function Index({ competitions, filters }: Props) {
     };
     
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AdminLayout breadcrumbs={breadcrumbs}>
 
             <div className="py-12">
                 <Head title="Competitions" />
@@ -56,6 +56,6 @@ export default function Index({ competitions, filters }: Props) {
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </AdminLayout>
     );
 }

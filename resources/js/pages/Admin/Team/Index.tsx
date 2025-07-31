@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Link, Head, router,usePage } from "@inertiajs/react";
-import AppLayout from "@/layouts/app-layout";
+import AdminLayout from "@/layouts/admin-layout";
 import { type BreadcrumbItem, Team, Competition } from "@/types";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
@@ -34,7 +34,7 @@ export default function Index({ teams, leagues }: IndexProps) {
   };
 
   return (
-    <AppLayout breadcrumbs={breadcrumbs}>
+    <AdminLayout breadcrumbs={breadcrumbs}>
       <div className="py-12">
         <Head title="Teams" />
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col gap-4">
@@ -95,6 +95,6 @@ export default function Index({ teams, leagues }: IndexProps) {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </AdminLayout>
   );
 }

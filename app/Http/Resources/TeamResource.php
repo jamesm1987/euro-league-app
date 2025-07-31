@@ -20,7 +20,10 @@ class TeamResource extends JsonResource
             'price' => $this->price,
             'formatted_price' => $this->formatted_price,
             'league' => $this->league->name,
+            'country' => $this->league->country,
             'api_id' => $this->api_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

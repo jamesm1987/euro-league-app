@@ -4,7 +4,7 @@ import * as React from "react";
 import { Link, Head, router,usePage } from "@inertiajs/react";
 import AdminLayout from "@/layouts/admin-layout";
 import { type BreadcrumbItem, Team, Competition } from "@/types";
-import { columns } from "./columns";
+import { teamColumns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
@@ -83,7 +83,7 @@ export default function Index({ teams, leagues }: IndexProps) {
           {/* Table */}
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <DataTable
-              columns={columns({
+              columns={teamColumns({
                 onViewTeam: handleViewTeam,
               })}
               data={teams.data}

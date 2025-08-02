@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CompetitionController;
+use App\Http\Controllers\Admin\FixtureController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\GameRuleController;
 use App\Http\Controllers\Admin\ImportController;
@@ -30,6 +31,7 @@ Route::prefix('admin')
     ->group(function () {
         Route::resource('settings/rules', GameRuleController::class);
         Route::resource('competitions', CompetitionController::class);
+        Route::resource('fixtures', FixtureController::class);
         Route::resource('teams', TeamController::class);
         Route::get('/import', [ImportController::class, 'index'])->name('imports.index');
         Route::post('/import', [ImportController::class, 'submit'])->name('imports.submit');

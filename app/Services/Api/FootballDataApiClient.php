@@ -75,6 +75,21 @@ public function getTeams($leagues)
     return $teams;
 }
 
-    public function getFixtures(){}
+public function getFixtures($leagues)
+{
+    $fixtures = collect($leagues)
+        ->flatMap(function ($league) {
+            $apiResponse = $this->call('fixtures', [
+                'season' => $this->season,
+                'league' => $league->api_id,
+            ]);
+
+            return $apiResponse['response'] ?? [];
+        })
+        ->values()
+        ->all();
+
+        return $fixtures;
+    }
 
 }

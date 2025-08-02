@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('fixtures', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('api_id')->unique();
+            $table->foreignId('league_id')->nullable()->constrained('competitions')->nullOnDelete();
             $table->foreignId('home_team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->foreignId('away_team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->unsignedTinyInteger('home_team_score')->nullable();

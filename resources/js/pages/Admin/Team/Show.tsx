@@ -4,6 +4,8 @@ import * as React from "react";
 import { Link, Head, router,usePage } from "@inertiajs/react";
 import AdminLayout from "@/layouts/admin-layout";
 import { type BreadcrumbItem, Team } from "@/types";
+import { fixtureColumns, resultColumns } from "./columns";
+import { DataTable } from "@/components/ui/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,6 +23,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Index({ team }: ShowProps) {
+
+    console.log(team);
 
   return (
     <AdminLayout breadcrumbs={breadcrumbs}>
@@ -52,7 +56,8 @@ export default function Index({ team }: ShowProps) {
                 <Tabs defaultValue="overview">
                     <TabsList>
                         <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="activity">Activity</TabsTrigger>
+                        <TabsTrigger value="fixtures">Fixtures</TabsTrigger>
+                        <TabsTrigger value="results">Results</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="overview">
@@ -64,14 +69,23 @@ export default function Index({ team }: ShowProps) {
                         </Card>
                     </TabsContent>
 
-                    <TabsContent value="activity">
+                    <TabsContent value="fixtures">
                         <Card>
-                            <CardHeader><CardTitle>Activity Log</CardTitle></CardHeader>
+                            <CardHeader><CardTitle>Fixtures</CardTitle></CardHeader>
                             <CardContent>
-                                <p>Coming soon...</p>
+                                <DataTable columns={fixtureColumns} data={team.data.fixtures} />
                             </CardContent>
                         </Card>
                     </TabsContent>
+
+                    <TabsContent value="results">
+                        <Card>
+                            <CardHeader><CardTitle>Results</CardTitle></CardHeader>
+                            <CardContent>
+                                <DataTable columns={resultColumns} data={team.data.results} />
+                            </CardContent>
+                        </Card>
+                    </TabsContent>                    
                 </Tabs>
 
                 {/* Actions */}

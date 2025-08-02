@@ -4,10 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\FixtureResource;
-use App\Http\Resources\ResultResource;
 
-class TeamResource extends JsonResource
+class ResultResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,14 +16,15 @@ class TeamResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'api_id' => $this->api_id,
-            'name' => $this->name,
-            'price' => $this->price,
-            'formatted_price' => $this->formatted_price,
+            'home' => $this->home_team->name,
+            'away' => $this->away_team->name,
+            'formattedScore' => $this->formattedScore,
+            'home_score' => $this->home_team_score,
+            'away_score' => $this->away_team_score,
             'league' => $this->league->name,
             'country' => $this->league->country,
-            'fixtures' => FixtureResource::collection($this->fixtures()->get()),
-            'results' => ResultResource::collection($this->results()->get()),
+            'kickoff_at' => $this->kickoff_at,
+            'is_processed' => $this->is_processed,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

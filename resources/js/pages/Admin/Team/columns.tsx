@@ -2,6 +2,8 @@
 
 import type { Team } from '@/types';
 import type { ColumnDef } from '@tanstack/react-table';
+import { formatKickoffTime } from "@/lib/utils"
+ 
 
 import { MoreHorizontal } from "lucide-react";
 
@@ -15,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export const columns = ({ 
+export const teamColumns = ({ 
   onViewTeam,
 }: { 
   onViewTeam: (team: Team) => void; 
@@ -69,3 +71,73 @@ export const columns = ({
   },
 
 ];
+
+export type Fixture = {
+  home: string
+  away: string
+  kickoff_at: string
+  is_processed: boolean
+}
+
+export const fixtureColumns: ColumnDef<Fixture>[] = [
+  {
+    accessorKey: "home",
+    header: "Home Team",
+  },
+  {
+    accessorKey: "away",
+    header: "Away Team",
+  },
+  {
+    accessorKey: "kickoff_at",
+    header: "Date",
+      cell: ({ getValue }) => {
+    const dateStr = getValue() as string;
+      return formatKickoffTime(dateStr);
+    },
+  },
+
+  {
+    accessorKey: "is_processed",
+    header: "Processed"
+  },  
+]
+
+export type Result = {
+  home: string
+  away: string
+  home_score: number | null
+  away_score: number | null
+  formatted_score: string | null
+  kickoff_at: string
+  is_processed: boolean
+}
+
+ 
+export const resultColumns: ColumnDef<Result>[] = [
+  {
+    accessorKey: "home",
+    header: "Home Team",
+  },
+  {
+      accessorKey: "formattedScore",
+      header: "Score"
+  },
+  {
+    accessorKey: "away",
+    header: "Away Team",
+  },
+  {
+    accessorKey: "kickoff_at",
+    header: "Date",
+      cell: ({ getValue }) => {
+    const dateStr = getValue() as string;
+      return formatKickoffTime(dateStr);
+    },
+  },
+
+  {
+    accessorKey: "is_processed",
+    header: "Processed"
+  },  
+]

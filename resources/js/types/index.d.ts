@@ -57,7 +57,18 @@ export type Team = {
     country: string
     price: number
     formatted_price: string
+    fixtures: Fixture[]
     api_id: number
+}
+
+export type Fixture = {
+    id: number
+    home: string
+    away: string
+    league: string
+    country: string
+    is_proceessed: boolean
+    kickoff_at: string
 }
 
 export type Import = {

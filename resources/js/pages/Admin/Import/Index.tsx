@@ -1,5 +1,5 @@
 
-import AppLayout from '@/layouts/app-layout';
+import AdminLayout from '@/layouts/admin-layout';
 import { Link, Head, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { type Import } from '@/types';
@@ -49,7 +49,7 @@ export default function Index({ imports, filters, settings = {} }: Props) {
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AdminLayout breadcrumbs={breadcrumbs}>
 
             <div className="py-12">
                 <Head title="Imports" />
@@ -126,6 +126,6 @@ export default function Index({ imports, filters, settings = {} }: Props) {
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </AdminLayout>
     );
 }

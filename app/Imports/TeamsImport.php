@@ -33,6 +33,7 @@ class TeamsImport implements ImportTypeInterface
                 ['api_id' => $team['api_id']],
                 [
                     'name' => $team['name'],
+                    'league_id' => $team['league_id']
                 ]
             );
         }
@@ -46,9 +47,11 @@ class TeamsImport implements ImportTypeInterface
             return [
                 'api_id' => $team['id'] ?? null,
                 'name' => $team['name'] ?? null,
+                'league_id' => $team['league_id'],
             ];
         })->filter(function ($item) {
             return !is_null($item['api_id']) && !is_null($item['name']);
         })->toArray();
+
     }
 }

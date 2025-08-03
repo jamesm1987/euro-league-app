@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class Fixture extends Model
 {
@@ -52,5 +53,10 @@ class Fixture extends Model
     }
 
 
-
+    public static function getUnprocessedFixtures(): Collection
+    {   
+        return static::where('is_processed', false)
+            ->whereNotNull('home_team_score')
+            ->whereNotNull('away_team_score');
+    }
 }

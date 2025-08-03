@@ -65,9 +65,9 @@ public function getTeams($leagues)
 
 
         if (isset($apiResponse['response']) && is_array($apiResponse['response'])) {
-            foreach ($apiResponse['response'] as $team) {
-                $team['league_id'] = $league->id;
-                $teams[] = $team;
+            foreach ($apiResponse['response'] as $row) {
+                $row['team']['league_id'] = $league->id;
+                $teams[] = $row;
             }
         }
     }

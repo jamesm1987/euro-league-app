@@ -8,22 +8,34 @@ abstract class GameRuleEvaluator implements RuleEvaluatorInterface
 {
     protected string $context;
 
-    public function evaluate(array $contextData): int
+    /**
+     * Evaluate all active rules in this context against the given data.
+     * Returns an array of award payloads.
+     */
+    public function evaluate(array $contextData): array
     {
         $rules = GameRule::where('context', $this->context)
             ->where('active', true)
             ->get();
 
-        $points = 0;
+        $awards = [];
 
         foreach ($rules as $rule) {
-            if ($this->passes($rule, $contextData)) {
-                $points += $rule->points;
+            $results = $this->applyRule($rule, $contextData);
+
+            foreach ($results as $award) {
+                $awards[] = $award;
             }
         }
 
-        return $points;
+        return $awards;
     }
 
-    abstract protected function passes(GameRule $rule, array $contextData): bool;
+    /**
+     * Given a rule and context, return an array of awards (or empty array if rule doesn't apply).
+     */
+    abstract protected function applyRule(GameRule $rule, array $contextData): array;
+
+
+    abstract protected function prepareContext(array $data): array;
 }

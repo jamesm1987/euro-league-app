@@ -71,4 +71,9 @@ class Team extends Model
         ->whereNotNull('away_team_score');
     }
 
+    public function points()
+    {
+        return '';
+    }
+
 }

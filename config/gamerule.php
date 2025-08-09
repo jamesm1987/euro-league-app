@@ -1,8 +1,14 @@
 <?php
 
+
 return [
-    'result_points'     => ResultPointsEvaluator::class,
-    'score_points'      => ScorePointsEvaluator::class,
-    'goalscorer_points' => GoalscorerPointsEvaluator::class,
-    'trophy_points'     => TrophyPointsEvaluator::class,
+
+    'namespace' =>          'App\\Points\\Evaluators\\',
+
+    'evaluators' => [
+        'result_points'     => 'ResultPointsEvaluator',
+        'score_points'      => 'ScorePointsEvaluator',
+        'goalscorer_points' => 'GoalscorerPointsEvaluator',
+        'trophy_points'     => 'TrophyPointsEvaluator',
+    ]
 ];

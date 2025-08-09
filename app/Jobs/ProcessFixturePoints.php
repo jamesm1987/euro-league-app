@@ -4,14 +4,17 @@ namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+
+use App\Points\Services\PointsProcessor;
+
 use App\Models\Fixture;
-use App\Services\GameRules\ResultPointsEvaluator;
 
 class ProcessFixturePoints implements ShouldQueue
 {
     use Queueable;
 
-    public Fixture $fixture;
+    protected Fixture $fixture;
+
 
     /**
      * Create a new job instance.
@@ -24,8 +27,8 @@ class ProcessFixturePoints implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(ResultPointsEvaluator $evaluator): void
+    public function handle(PointsProcessor $processor): void
     {
-        //
+        $processor->evaluateFixture($this->fixture);
     }
 }

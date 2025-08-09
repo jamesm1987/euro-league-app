@@ -70,10 +70,50 @@ class Team extends Model
         ->whereNotNull('home_team_score')
         ->whereNotNull('away_team_score');
     }
+    
 
     public function points()
     {
-        return '';
+        return $this->hasMany(Point::class);
     }
+
+    public function pointsWithRules()
+    {
+        return $this->points()->with('gameRule', 'pointable');
+    }
+
+    public function totalPoints()
+    {
+        return $this->points()->with('gameRule')->get()->sum(function ($point) {
+            return $point->gameRule->points;
+        });
+    }
+
+    public function pointsForContext(string $context)
+    {
+        $points = $this->points()->whereHas('gameRule', function ($query) use ($context) {
+            $query->where('context', $context);
+        })->with('gameRule')->get();
+
+        return $points->sum(fn($point) => $point->gameRule->points);
+    }
+
+    public function pointsForKey(string $key)
+    {
+        $points = $this->points()->whereHas('gameRule', function ($query) use ($key) {
+            $query->where('key', $key);
+        })->with('gameRule')->get();
+
+        return $points->sum(fn($point) => $point->gameRule->points);
+    }    
+
+    public function pointsCountForKey(string $key)
+    {
+        $points = $this->points()->whereHas('gameRule', function ($query) use ($key) {
+            $query->where('key', $key);
+        })->with('gameRule')->get();
+
+        return $points->count();
+    }  
 
 }

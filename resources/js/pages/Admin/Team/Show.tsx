@@ -42,6 +42,8 @@ export default function Index({ team }: ShowProps) {
 
                 {/* Info Card */}
                 <Card>
+
+
                     <CardHeader>
                         <CardTitle>Team Info</CardTitle>
                     </CardHeader>
@@ -49,6 +51,9 @@ export default function Index({ team }: ShowProps) {
                         <div><strong>League:</strong> <Badge>{team.data.league}</Badge></div>
                         <div><strong>Country:</strong> {team.data.country}</div>
                         <div><strong>Price:</strong> {team.data.formatted_price}</div>
+                        <div><strong>Win:</strong> {team.data.win_count} </div>
+                        <div><strong>Draw:</strong> {team.data.draw_count} </div>
+                        <div><strong>Points:</strong> {team.data.total_points} </div>
                     </CardContent>
                 </Card>
 

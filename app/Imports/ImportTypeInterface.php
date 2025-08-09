@@ -11,7 +11,7 @@ interface ImportTypeInterface
      * @param array $params
      * @return array
      */
-    public function fetch(): array;
+    public function fetch();
 
     /**
      * Process the fetched data.

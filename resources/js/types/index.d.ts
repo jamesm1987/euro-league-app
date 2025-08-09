@@ -58,6 +58,13 @@ export type Team = {
     price: number
     formatted_price: string
     fixtures: Fixture[]
+    total_points: number | null
+    win_count: number | null
+    draw_count: number | null
+    score_home_win_count: number | null
+    score_home_defeat_count: number | null
+    score_away_win_count: number | null
+    score_away_defeat_count: number | null    
     api_id: number
 }
 

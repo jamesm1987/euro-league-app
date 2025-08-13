@@ -59,6 +59,7 @@ export type Team = {
     formatted_price: string
     fixtures: Fixture[]
     total_points: number | null
+    goal_differnce: number | null
     win_count: number | null
     draw_count: number | null
     score_home_win_count: number | null
@@ -72,6 +73,7 @@ export type Fixture = {
     id: number
     home: string
     away: string
+    result: string
     league: string
     country: string
     is_proceessed: boolean

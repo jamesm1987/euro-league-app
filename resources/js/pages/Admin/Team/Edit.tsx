@@ -1,11 +1,10 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AdminLayout from '@/layouts/admin-layout';
 import { Head } from '@inertiajs/react';
-import DeleteCompetitionForm from './Partials/DeleteCompetitionForm';
 import UpdateCompetitionInformationForm from './Partials/UpdateCompetitionInformationForm';
 
 export default function Edit({ competitions }) {
     return (
-        <AuthenticatedLayout
+        <AdminLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Competitions
@@ -26,6 +25,6 @@ export default function Edit({ competitions }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AdminLayout>
     );
 }

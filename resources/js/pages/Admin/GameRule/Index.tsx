@@ -6,7 +6,7 @@ import { type GameRule } from '@/types';
 import { type BreadcrumbItem } from '@/types';
 import { columns } from './columns';
 import { DataTable } from '@/components/ui/data-table';
-import { CreateGameRuleModal } from "./partials/create-game-rule";
+import { CreateGameRuleModal } from "./Partials/create-game-rule";
 
 interface Props {
     rules: GameRule[];

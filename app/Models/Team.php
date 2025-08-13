@@ -70,6 +70,31 @@ class Team extends Model
         ->whereNotNull('home_team_score')
         ->whereNotNull('away_team_score');
     }
+
+    
+
+    public function goalsScored()
+    {
+        return $this->homeFixtures()
+            ->sum('home_team_score')
+            +
+            $this->awayFixtures()
+            ->sum('away_team_score');
+    }
+
+    public function goalsConceded()
+    {
+        return $this->homeFixtures()
+            ->sum('away_team_score')
+            +
+            $this->awayFixtures()
+            ->sum('home_team_score');
+    } 
+    
+    public function goalDifference()
+    {
+        return $this->goalsScored() - $this->goalsConceded();
+    }
     
 
     public function points()
@@ -114,6 +139,21 @@ class Team extends Model
         })->with('gameRule')->get();
 
         return $points->count();
-    }  
+    }
 
+
+    public function defeatCount()
+    {
+
+        return $this->results()
+            ->where(function ($query) {
+                $query->where('home_team_id', $this->id)
+                    ->whereColumn('home_team_score', '<', 'away_team_score');
+            })
+            ->orWhere(function ($query) {
+                $query->where('away_team_id', $this->id)
+                    ->whereColumn('away_team_score', '<', 'home_team_score');
+            })->count();
+
+        }
 }

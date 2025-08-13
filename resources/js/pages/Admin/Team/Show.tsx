@@ -22,9 +22,8 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function Index({ team }: ShowProps) {
+export default function Show({ team }: ShowProps) {
 
-    console.log(team);
 
   return (
     <AdminLayout breadcrumbs={breadcrumbs}>
@@ -53,7 +52,11 @@ export default function Index({ team }: ShowProps) {
                         <div><strong>Price:</strong> {team.data.formatted_price}</div>
                         <div><strong>Win:</strong> {team.data.win_count} </div>
                         <div><strong>Draw:</strong> {team.data.draw_count} </div>
+                        <div><strong>Lost:</strong> {team.data.defeat_count} </div>
+                        <div><strong>Goal Difference:</strong> {team.data.goal_difference} </div>
                         <div><strong>Points:</strong> {team.data.total_points} </div>
+                        <div><strong>Score Points:</strong> {team.data.score_points} </div>
+                        
                     </CardContent>
                 </Card>
 

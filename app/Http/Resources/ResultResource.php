@@ -7,6 +7,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ResultResource extends JsonResource
 {
+
+    public function __construct($resource, ?int $teamId = null)
+    {
+        parent::__construct($resource);
+        $this->teamId = $teamId;
+    }
+    
     /**
      * Transform the resource into an array.
      *
@@ -25,6 +32,7 @@ class ResultResource extends JsonResource
             'country' => $this->league->country,
             'kickoff_at' => $this->kickoff_at,
             'is_processed' => $this->is_processed,
+            'result'     => $this->team_Id ? $this->teamResultOutcome($teamId) : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

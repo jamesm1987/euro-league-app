@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Admin\CompetitionController;
 use App\Http\Controllers\Admin\FixtureController;
 use App\Http\Controllers\Admin\TeamController;

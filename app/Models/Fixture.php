@@ -59,4 +59,45 @@ class Fixture extends Model
             ->whereNotNull('home_team_score')
             ->whereNotNull('away_team_score');
     }
+
+    public function resultOutcome()
+    {
+        if (is_null($this->home_team_score) || is_null($this->away_team_score)) {
+            return null;
+        }
+
+        if ($this->home_team_score > $this->away_team_score) {
+            return 'home';
+        }
+
+        if ($this->home_team_score < $this->away_team_score) {
+            return 'away';
+        }
+
+        return 'draw';
+    }
+
+    public function teamResultOutcome(int $teamId): ?int
+    {
+        $fixtureResultOutcome = $this->resultOutcome();
+
+        if ($this->home_team_id === $teamId) {
+            return match ($fixtureResultOutcome) {
+                'home' => 'win',
+                'away' => 'loss',
+                'draw'  => 'draw',
+            };
+        }
+
+        if ($this->away_team_id === $teamId) {
+            return match ($absolute) {
+                'home' => 'loss',
+                'away' => 'win',
+                'draw'    => 'draw',
+            };
+        }
+
+        return null;
+    }
+
 }

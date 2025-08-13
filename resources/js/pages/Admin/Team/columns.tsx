@@ -128,16 +128,19 @@ export const resultColumns: ColumnDef<Result>[] = [
     header: "Away Team",
   },
   {
+    accessorKey: "result",
+    header: "Result",
+  },  
+  {
+    accessorKey: "is_processed",
+    header: "Processed"
+  },  
+  {
     accessorKey: "kickoff_at",
     header: "Date",
       cell: ({ getValue }) => {
     const dateStr = getValue() as string;
       return formatKickoffTime(dateStr);
     },
-  },
-
-  {
-    accessorKey: "is_processed",
-    header: "Processed"
   },  
 ]

@@ -25,11 +25,10 @@ class FixturesImport implements ImportTypeInterface
     public function fetch()
     {
 
-        // $leagues = Competition::where('type', 'league')
-            // ->get(['id', 'api_id']);
+        $leagues = Competition::where('type', 'league')
+            ->get(['id', 'api_id']);
 
-        // return $this->apiService->getFixtures($leagues);
-        return Fixture::all();
+        return $this->apiService->getFixtures($leagues);
     }
 
     public function process($data): void
@@ -38,18 +37,18 @@ class FixturesImport implements ImportTypeInterface
         foreach ($data as $fixture) {
 
 
-            // $fixture = Fixture::updateOrCreate(
-            //     ['api_id' => $fixture['api_id']],
-            //     [
-            //         'home_team_id' => $this->apiHelper->getTeamIdByApiId($fixture['home_team_id']),
-            //         'away_team_id' => $this->apiHelper->getTeamIdByApiId($fixture['away_team_id']),
-            //         'home_team_score' => $fixture['home_team_score'],
-            //         'away_team_score' => $fixture['away_team_score'],
-            //         'league_id' => $this->apiHelper->getLeagueIdByApiId($fixture['league_id']),
-            //         'kickoff_at' => $fixture['kickoff_at'],
-            //         'status' => $fixture['status']
-            //     ]
-            // );
+            $fixture = Fixture::updateOrCreate(
+                ['api_id' => $fixture['api_id']],
+                [
+                    'home_team_id' => $this->apiHelper->getTeamIdByApiId($fixture['home_team_id']),
+                    'away_team_id' => $this->apiHelper->getTeamIdByApiId($fixture['away_team_id']),
+                    'home_team_score' => $fixture['home_team_score'],
+                    'away_team_score' => $fixture['away_team_score'],
+                    'league_id' => $this->apiHelper->getLeagueIdByApiId($fixture['league_id']),
+                    'kickoff_at' => $fixture['kickoff_at'],
+                    'status' => $fixture['status']
+                ]
+            );
 
             if (
                 !is_null($fixture->home_team_score) &&

@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Competition;
+use App\Http\Resources\LeagueResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -66,5 +67,14 @@ class CompetitionController extends Controller
 
         return Redirect::route('admin.competitions.index')
             ->with('success', 'Competition deleted successfully.');
+    }
+
+    public function show(Competition $competition): Response
+    {
+        $competition = new LeagueResource($competition);
+        
+        return Inertia::render('Admin/Competition/Show', [
+            'competition' => $competition,
+        ]);
     }
 }

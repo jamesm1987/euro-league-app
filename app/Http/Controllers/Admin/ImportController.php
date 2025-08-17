@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Import;
 use App\Jobs\ImportJob;
-use App\Imports\TeamsImport;
-use App\Imports\FixturesImport;
+use App\Imports\{TeamsImport, FixturesImport, CupWinnersImport};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -35,6 +34,7 @@ class ImportController extends Controller
         $importers = [
             'teams' => TeamsImport::class,
             'fixtures' => FixturesImport::class,
+            'trophys' => CupWinnersImport::class,
         ];
         if ( $request->filled('type') ) {
 

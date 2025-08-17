@@ -34,7 +34,7 @@ class TeamResource extends JsonResource
             'defeat_count' => $this->defeatCount(),
             'score_home_win_count' => $this->pointsCountForKey('home_win'),
             'score_home_defeat_count' => $this->pointsCountForKey('home_defeat'),
-            'score_away_win_count' => $this->pointsCountForKey('home_win'),
+            'score_away_win_count' => $this->pointsCountForKey('away_win'),
             'score_away_defeat_count' => $this->pointsCountForKey('away_defeat'),            
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

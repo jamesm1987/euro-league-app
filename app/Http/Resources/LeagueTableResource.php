@@ -17,12 +17,8 @@ class LeagueResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'slug' => $this->slug,
-            'country' => $this->country,
-            'updated_at' => $this->updated_at,
-            'league_table' => $this->getLeagueTable(),
-            'score_points_table' => $this->getScorePointsTable(),
-            'total_points_table' => $this->getTotalPointsTable(),
+            'teams' => $this->slug,
+            'table' => $this->teamsOrderedByPoints()
         ];
     }
 }

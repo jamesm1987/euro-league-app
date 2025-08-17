@@ -4,7 +4,7 @@ import * as React from "react";
 import { Link, Head, router, usePage } from "@inertiajs/react";
 import AdminLayout from "@/layouts/admin-layout";
 import { type BreadcrumbItem, Competition } from "@/types";
-import { leagueTableColumns } from "./columns";
+import { columns, leagueTableColumns, scoreTableColumns, pointsTableColumns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -55,7 +55,21 @@ export default function Show({ competition }: ShowProps) {
                 <Card>
                     <CardHeader><CardTitle>League Table</CardTitle></CardHeader>
                     <CardContent>
-                        
+                          <DataTable columns={leagueTableColumns} data={competition.data.league_table} />
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader><CardTitle>Score Table</CardTitle></CardHeader>
+                    <CardContent>
+                          <DataTable columns={scoreTableColumns} data={competition.data.score_points_table} />
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader><CardTitle>Points Table</CardTitle></CardHeader>
+                    <CardContent>
+                          <DataTable columns={pointsTableColumns} data={competition.data.total_points_table} />
                     </CardContent>
                 </Card>
                 

@@ -64,6 +64,7 @@ export default function Index({ imports, filters, settings = {} }: Props) {
                             <option value="">All Type</option>
                             <option value="teams">Teams</option>
                             <option value="fixtures">Fixture</option>
+                            <option value="trophys">Trophy Winners</option>
                         </select>
                         <button onClick={handleFilter} className="bg-blue-500 text-white px-3 py-1 rounded">
                             Filter
@@ -106,6 +107,7 @@ export default function Index({ imports, filters, settings = {} }: Props) {
                                         <option value="">Select type...</option>
                                         <option value="teams">Teams</option>
                                         <option value="fixtures">Fixtures</option>
+                                        <option value="trophys">Trophy Winners</option>
                                         </select>
                                     </div>
                                     </div>

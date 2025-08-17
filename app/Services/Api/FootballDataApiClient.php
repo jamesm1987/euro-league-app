@@ -47,49 +47,68 @@ class FootballDataApiClient
             return $response->json();
 
         } catch (Exception $e) {
-            return '';
+            Log::error("API call exception for {$url}: " . $e->getMessage());
+            return null;
         }
          
     }
 
     
-public function getTeams($leagues)
-{
-    $teams = [];
+    public function getTeams($leagues)
+    {
+        $teams = [];
 
-    foreach ($leagues as $league) {
-        $apiResponse = $this->call('teams', [
-            'season' => $this->season,
-            'league' => $league->api_id
-        ]);
-
-
-        if (isset($apiResponse['response']) && is_array($apiResponse['response'])) {
-            foreach ($apiResponse['response'] as $row) {
-                $row['team']['league_id'] = $league->id;
-                $teams[] = $row;
-            }
-        }
-    }
-
-    return $teams;
-}
-
-public function getFixtures($leagues)
-{
-    $fixtures = collect($leagues)
-        ->flatMap(function ($league) {
-            $apiResponse = $this->call('fixtures', [
+        foreach ($leagues as $league) {
+            $apiResponse = $this->call('teams', [
                 'season' => $this->season,
-                'league' => $league->api_id,
+                'league' => $league->api_id
             ]);
 
-            return $apiResponse['response'] ?? [];
-        })
-        ->values()
-        ->all();
 
-        return $fixtures;
+            if (isset($apiResponse['response']) && is_array($apiResponse['response'])) {
+                foreach ($apiResponse['response'] as $row) {
+                    $row['team']['league_id'] = $league->id;
+                    $teams[] = $row;
+                }
+            }
+        }
+
+        return $teams;
+    }
+
+    public function getFixtures($leagues)
+    {
+        $fixtures = collect($leagues)
+            ->flatMap(function ($league) {
+                $apiResponse = $this->call('fixtures', [
+                    'season' => $this->season,
+                    'league' => $league->api_id,
+                ]);
+
+                return $apiResponse['response'] ?? [];
+            })
+            ->values()
+            ->all();
+
+            return $fixtures;
+    }
+
+    public function getCupWinners($cups)
+    {
+        $competitions = collect($cups)
+            ->flatMap(function ($cup) {
+                $apiResponse = $this->call('fixtures', [
+                    'season' => $this->season,
+                    'league' => $cup->api_id,
+                    'round'  => 'final'
+                ]);
+
+                return $apiResponse['response'] ?? [];
+            })
+            ->values()
+            ->all();
+
+            return $competitions;
     }
 
 }

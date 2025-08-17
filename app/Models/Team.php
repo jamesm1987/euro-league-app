@@ -11,7 +11,7 @@ class Team extends Model
         'api_id',
         'name',
         'display_name',
-        'league_id'
+        'competition_id '
     ];
 
     protected $appends = ['formatted_price'];
@@ -71,6 +71,11 @@ class Team extends Model
         ->whereNotNull('away_team_score');
     }
 
+    public function fixturesPlayed()
+    {
+        return $this->results()->count();
+    }
+
     
 
     public function goalsScored()
@@ -112,7 +117,7 @@ class Team extends Model
         return $this->points()->with('gameRule')->get()->sum(function ($point) {
             return $point->gameRule->points;
         });
-    }
+    }  
 
     public function pointsForContext(string $context)
     {
@@ -123,14 +128,17 @@ class Team extends Model
         return $points->sum(fn($point) => $point->gameRule->points);
     }
 
-    public function pointsForKey(string $key)
+    public function pointsForKey(array $keys)
     {
-        $points = $this->points()->whereHas('gameRule', function ($query) use ($key) {
-            $query->where('key', $key);
-        })->with('gameRule')->get();
+        $points = $this->points()
+            ->whereHas('gameRule', function ($query) use ($keys) {
+                $query->whereIn('key', $keys);
+            })
+            ->with('gameRule')
+            ->get();
 
         return $points->sum(fn($point) => $point->gameRule->points);
-    }    
+    }
 
     public function pointsCountForKey(string $key)
     {
@@ -139,6 +147,32 @@ class Team extends Model
         })->with('gameRule')->get();
 
         return $points->count();
+    }
+
+    public function winCount()
+    {
+
+        return $this->results()
+            ->where(function ($query) {
+                $query->where('home_team_id', $this->id)
+                    ->whereColumn('home_team_score', '>', 'away_team_score');
+            })
+            ->orWhere(function ($query) {
+                $query->where('away_team_id', $this->id)
+                    ->whereColumn('away_team_score', '>', 'home_team_score');
+            })->count();
+
+    }
+
+    public function drawCount()
+    {
+
+        return $this->results()
+            ->where(function ($query) {
+                $query->where('home_team_id', $this->id)
+                    ->whereColumn('home_team_score', '=', 'away_team_score');
+            })->count();
+
     }
 
 
@@ -155,5 +189,5 @@ class Team extends Model
                     ->whereColumn('away_team_score', '<', 'home_team_score');
             })->count();
 
-        }
+    }
 }

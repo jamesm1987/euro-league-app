@@ -18,7 +18,7 @@ class CompetitionController extends Controller
     public function index(Request $request)
     {
 
-        $query = Competition::query();
+        $query = Competition::league()->get();
 
         if ($request->filled('type')) {
             $query->where('type', $request->input('type'));
@@ -27,7 +27,7 @@ class CompetitionController extends Controller
 
 
         return Inertia::render('Admin/Competition/Index', [
-            'competitions' => $query->get(),
+            'competitions' => $query,
             'filters' => $request->only('type'),
         ]);
     }

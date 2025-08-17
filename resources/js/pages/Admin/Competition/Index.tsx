@@ -29,6 +29,10 @@ export default function Index({ competitions, filters }: Props) {
     const handleFilter = () => {
         router.get(route('admin.competitions.index'), { type }, { preserveState: true });
     };
+
+    const handleViewLeague = (competition: Competition) => {
+    router.get(`/admin/competitions/${competition.id}`)
+    };
     
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
@@ -52,7 +56,11 @@ export default function Index({ competitions, filters }: Props) {
                         </button>
                     </div>
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <DataTable columns={columns} data={competitions} />
+
+                        <DataTable columns={columns({
+                                onViewLeague: handleViewLeague,
+                            })} data={competitions} 
+                        />
                     </div>
                 </div>
             </div>

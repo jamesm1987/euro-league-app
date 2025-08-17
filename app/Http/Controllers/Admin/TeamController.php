@@ -20,7 +20,7 @@ class TeamController extends Controller
     public function index(Request $request)
     {
 
-        $leagues = LeagueResource::collection(Competition::where('type', 'league')->get());
+        $leagues = LeagueResource::collection(Competition::all());
         $teams = TeamResource::collection(Team::with('league')->get());
 
         if ($request->filled('league')) {
@@ -51,9 +51,9 @@ class TeamController extends Controller
      */
     public function show(Team $team): Response
     {
-        $team = new TeamResource($team);
+       
         return Inertia::render('Admin/Team/Show', [
-            'team' => $team,
+            'team' => new TeamResource($team),
         ]);
     }
 

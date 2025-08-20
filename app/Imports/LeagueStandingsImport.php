@@ -9,9 +9,8 @@ use App\Models\GameRule;
 use App\Models\Point;
 use Illuminate\Support\Facades\Log;
 use App\Services\ApiHelper;
-use App\Events\FixtureFinalized;
 
-class CupWinnersImport implements ImportTypeInterface
+class LeagueStandingsImport implements ImportTypeInterface
 {
 
     protected $apiService;
@@ -39,7 +38,7 @@ class CupWinnersImport implements ImportTypeInterface
 
         foreach ($data as $league) {
 
-            $competition_id = $this->apiHelper->getLeagueIdByApiId($cup['league_id']);
+            $competition_id = $this->apiHelper->getLeagueIdByApiId($league['league_id']);
 
             $gameRule = null;
             if (!empty($competition_id)) {

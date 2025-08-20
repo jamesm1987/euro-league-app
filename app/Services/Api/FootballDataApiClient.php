@@ -111,4 +111,21 @@ class FootballDataApiClient
             return $competitions;
     }
 
+       public function getLeagueStandings($leagues)
+    {
+        $leagueStandings = collect($leagues)
+            ->flatMap(function ($league): mixed {
+                $apiResponse = $this->call('standings', [
+                    'season' => $this->season,
+                    'league' => $league->api_id,
+                ]);
+
+                return $apiResponse['response'] ?? [];
+            })
+            ->values()
+            ->all();
+
+            return $leagueStandings;
+    } 
+
 }

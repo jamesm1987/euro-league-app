@@ -40,20 +40,13 @@ class LeagueStandingsImport implements ImportTypeInterface
 
             $competition_id = $this->apiHelper->getLeagueIdByApiId($league['league_id']);
 
-            $gameRule = null;
-            if (!empty($competition_id)) {
-                $gameRule = GameRule::where('competition_id', $competition_id)->first();
-            }
-
-            if (!$gameRule) {
-                $gameRule = GameRule::where('key', 'cup_win')->first();
-            }
+            $gameRule = GameRule::where('key', 'league_win')->first();
 
 
             Point::updateOrCreate(
                 ['pointable_id' => $competition_id],
                 [
-                    'team_id' => $this->apiHelper->getTeamIdByApiId($cup['team_id']),
+                    'team_id' => $this->apiHelper->getTeamIdByApiId($league['winner_id']),
                     'pointable_type' => Competition::class,
                     'game_rule_id' => $gameRule->id
                 ]
@@ -66,22 +59,20 @@ class LeagueStandingsImport implements ImportTypeInterface
     public function transform(array $data): array
     {
 
-        $league = [];
+        $leagues = [];
 
         foreach ($data as $row) {
             $league = $row['league'];
+            $standings = $league['standings'][0];
 
-            if ($fixture['status']['long'] !== 'Match Finished') {
-                continue;
-            }
-
-            $competitions[] = [
-                'team_id' => $teams['home']['winner'] ? $teams['home']['id'] : $teams['away']['id'],
+            $leagues[] = [
+                'standings' => $standings,
+                'winner_id' => $standings[0]['team']['id'],
                 'league_id'  => $league['id'],
             ];
         }
 
-       return $competitions;
+       return $leagues;
     }
 
 }

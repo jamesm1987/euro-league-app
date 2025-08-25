@@ -5,25 +5,28 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use App\Events\FixtureFinalized;
-use App\Jobs\ProcessFixturePoints;
+use App\Events\ApiImport;
+use App\Jobs\ProcessFixturePointsListener;
+use App\Listeners\SaveApiResponse;
 
 class EventServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
+
+
+    protected $listen = [
+        FixtureFinalized::class => [
+            ProcessFixturePointsListener::class,
+        ],
+
+        ApiImport::class => [
+            SaveApiResponse::class,
+        ],
+    ];
 
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
-        Event::listen(FixtureFinalized::class, function (FixtureFinalized $event) {
-            ProcessFixturePoints::dispatch($event->fixture)->onQueue('points');
-        });
     }
 }

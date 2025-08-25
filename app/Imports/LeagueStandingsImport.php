@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Services\Api\FootballDataApiClient;
+use App\Services\Api\Response;
 use App\Imports\ImportTypeInterface;
 use App\Models\Competition;
 use App\Models\GameRule;
@@ -14,12 +15,19 @@ class LeagueStandingsImport implements ImportTypeInterface
 {
 
     protected $apiService;
+    protected $apiResponseService;
     protected $apiHelper;
 
-    public function __construct(FootballDataApiClient $footballDataApiClient, ApiHelper $apiHelper)
+    public function __construct(
+        FootballDataApiClient $footballDataApiClient, 
+        ApiHelper $apiHelper,
+        Response $apiResponseService
+    )
     {
         $this->apiService = $footballDataApiClient;
         $this->apiHelper = $apiHelper;
+        $this->apiResponseService = $apiResponseService;
+        
     }
 
     public function fetch()
@@ -29,46 +37,32 @@ class LeagueStandingsImport implements ImportTypeInterface
             ->get(['id', 'api_id']);
 
 
-        return $this->apiService->getLeagueStandings($leagues);
+        $response = $this->apiService->getLeagueStandings($leagues);
+
+        return $this->apiResponseService->store('leagueStandings', $response);
         
     }
 
     public function process($data): void
     {
-
-        foreach ($data as $league) {
-
-            $competition_id = $this->apiHelper->getLeagueIdByApiId($league['league_id']);
-
-            $gameRule = GameRule::where('key', 'league_win')->first();
-
-
-            Point::updateOrCreate(
-                ['pointable_id' => $competition_id],
-                [
-                    'team_id' => $this->apiHelper->getTeamIdByApiId($league['winner_id']),
-                    'pointable_type' => Competition::class,
-                    'game_rule_id' => $gameRule->id
-                ]
-            );
-
-        }
-
+        ProcessLeagueWinnerPoints::dispatch($data);
     }
 
-    public function transform(array $data): array
+    public function transform(array $record): array
     {
 
         $leagues = [];
 
-        foreach ($data as $row) {
+        $competitions = json_decode($record->response, true);
+
+        foreach ($competitions as $row) {
             $league = $row['league'];
             $standings = $league['standings'][0];
 
             $leagues[] = [
                 'standings' => $standings,
-                'winner_id' => $standings[0]['team']['id'],
-                'league_id'  => $league['id'],
+                'winner_id' => $this->apiHelper->getTeamIdByApiId($standings[0]['team']['id']),
+                'league_id'  => $this->apiHelper->getLeagueIdByApiId($league['id']),
             ];
         }
 

@@ -5,9 +5,9 @@ import { ColumnDef } from "@tanstack/react-table"
 
 export type Import = {
   id: number
-  type: string
-  status: string
-  response: string
+  endpoint: string
+  response: string,
+  lookup_at: string
 }
  
 export const columns: ColumnDef<Import>[] = [
@@ -16,12 +16,21 @@ export const columns: ColumnDef<Import>[] = [
     header: "Id",
   },
   {
-    accessorKey: "type",
+    accessorKey: "endpoint",
     header: "Type",
   },
   {
-    accessorKey: "status",
+    accessorKey: "response",
     header: "Status",
+
+    cell: ({ getValue }) => {
+      const response = getValue() as string;
+          return response.length ? 'success' : 'failed';
+      },
   },  
+  {
+    accessorKey: "lookup_at",
+    header: "Imported At",
+  },    
 
 ]

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Import;
+use App\Models\ApiLookup;
 use App\Jobs\ImportJob;
-use App\Imports\{TeamsImport, FixturesImport, CupWinnersImport, LeagueStandingsImport};
+use App\Imports\{TeamsImport, FixturesImport, CupWinnersImport, LeagueStandingsImport, GoalScorersImport};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -17,7 +17,7 @@ class ImportController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Import::query();
+        $query = ApiLookup::query();
 
         if ($request->filled('type')) {
             $query->where('type', $request->input('type'));
@@ -36,7 +36,9 @@ class ImportController extends Controller
             'fixtures' => FixturesImport::class,
             'trophys' => CupWinnersImport::class,
             'leagueStandings' => LeagueStandingsImport::class,
+            'goalscorers' => GoalScorersImport::class,
         ];
+
         if ( $request->filled('type') ) {
 
             if (!array_key_exists($request->input('type'), $importers)) {

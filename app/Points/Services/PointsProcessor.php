@@ -49,13 +49,13 @@ class PointsProcessor
         
     }
 
-    public function evaluateLeagueTopScorers(array $topScorers): void 
+    public function evaluateLeagueTopScorers(Collection $league): void 
     {
         $rules = GameRule::where('active', 1)
             ->where('context', 'goalscorer_points')
         ->get();
 
-        $this->evaluateAll($rules, $topScorers);
+        $this->evaluateAll($rules, $league);
     }
 
     public function evaluateTrophies(array $trophyWinners): void

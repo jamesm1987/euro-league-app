@@ -26,13 +26,11 @@ class CupWinnersImport implements ImportTypeInterface
     public function fetch()
     {
 
-        // $cups = Competition::where('type', 'cup')
-        //     ->get(['id', 'api_id']);
+        $cups = Competition::where('type', 'cup')
+            ->get(['id', 'api_id']);
 
+        return $this->apiService->getCupWinners($cups);
 
-        // return $this->apiService->getCupWinners($cups);
-
-        $data = require database_path('seeders/trophys-api.php');
         
         return $data;
 

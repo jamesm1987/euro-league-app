@@ -3,23 +3,32 @@
 namespace App\Imports;
 
 use App\Services\Api\FootballDataApiClient;
+use App\Services\Api\Response;
+use App\Services\ApiHelper;
 use App\Imports\ImportTypeInterface;
 use App\Models\Competition;
 use App\Models\GoalScorer;
 use Illuminate\Support\Facades\Log;
-use App\Services\ApiHelper;
-use App\Events\FixtureFinalized;
+use App\Models\ApiLookup;
+use App\Jobs\SaveApiResponse;
+use App\Jobs\ProcessGoalScorerPoints;
 
 class GoalScorersImport implements ImportTypeInterface
 {
 
     protected $apiService;
+    protected $apiResponseService;
     protected $apiHelper;
 
-    public function __construct(FootballDataApiClient $footballDataApiClient, ApiHelper $apiHelper)
+    public function __construct(
+        FootballDataApiClient $footballDataApiClient, 
+        ApiHelper $apiHelper,
+        Response $apiResponseService
+    )
     {
         $this->apiService = $footballDataApiClient;
         $this->apiHelper = $apiHelper;
+        $this->apiResponseService = $apiResponseService;
     }
 
     public function fetch()
@@ -28,67 +37,44 @@ class GoalScorersImport implements ImportTypeInterface
         $leagues = Competition::where('type', 'league')
             ->get(['id', 'api_id']);
 
-        return $this->apiService->getTopScorers($leagues);
+        $response = $this->apiService->getTopGoalscorers($leagues);
+
+        return ApiLookup::where('endpoint', 'goalscorers')->latest();
+
+
     }
 
     public function process($data): void
     {
+        $leagueGoalScorers = collect($data)->groupBy('league_id');
 
-        foreach ($data as $fixture) {
-
-
-            $fixture = Fixture::updateOrCreate(
-                ['api_id' => $fixture['api_id']],
-                [
-                    'home_team_id' => $this->apiHelper->getTeamIdByApiId($fixture['home_team_id']),
-                    'away_team_id' => $this->apiHelper->getTeamIdByApiId($fixture['away_team_id']),
-                    'home_team_score' => $fixture['home_team_score'],
-                    'away_team_score' => $fixture['away_team_score'],
-                    'league_id' => $this->apiHelper->getLeagueIdByApiId($fixture['league_id']),
-                    'kickoff_at' => $fixture['kickoff_at'],
-                    'status' => $fixture['status']
-                ]
-            );
-
-            if (
-                !is_null($fixture->home_team_score) &&
-                !is_null($fixture->away_team_score) &&
-                !$fixture->is_processed
-            ) {
-                FixtureFinalized::dispatch($fixture);
-            }
-        }
-
+        ProcessGoalScorerPoints::dispatch($leagueGoalScorers);
     }
 
-    public function transform(array $data): array
+    public function transform($record): array
     {
-       $fixtures = [];
-       
-       foreach ($data as $row) {
-            $fixture = $row['fixture'];
-            $league = $row['league'];
-            $teams = $row['teams'];
-            $score =  $row['score'];
+       $teams = [];
 
-            if ($league['round'] === 'Relegation Round') {
-                continue;
+       $competitions = json_decode($record->response, true);
+
+       foreach ($competitions as $competition) {
+            
+
+            foreach ($competition as $row) {
+                
+                $statistics = $row['statistics'][0];
+                $league = $statistics['league'];
+                $team = $statistics['team'];
+                $goals = $statistics['goals'];
+
+                $teams[] = [
+                    'team_id' =>$this->apiHelper->getTeamIdByApiId($team['id']),
+                    'goals' =>  $goals['total'],
+                    'league_id' => $this->apiHelper->getLeagueIdByApiId($league['id'])
+                ];
             }
-
-            $fixtures[] = [
-                'api_id' => $fixture['id'],
-                'home_team_id' => $teams['home']['id'],
-                'away_team_id' => $teams['away']['id'],
-                'home_team_score' => $score['fulltime']['home'],
-                'away_team_score' => $score['fulltime']['away'],
-                'kickoff_at' => $fixture['date'],
-                'league_id'  => $league['id'],
-                'status' => $fixture['status']['long']
-            ];
-
        }
-
-       return $fixtures;
+       return $teams;
     }
 
 }

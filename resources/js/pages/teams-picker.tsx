@@ -1,4 +1,4 @@
-import AppLayout from '@/layouts/app-layout';
+import AppTeamPickerLayout from '@/layouts/app-team-picker-layout';
 import { type BreadcrumbItem, Team, Competition } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -40,7 +40,7 @@ export default function Index({teams, leagues}: IndexProps) {
     });
     
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AppTeamPickerLayout breadcrumbs={breadcrumbs}>
             <Head title="Teams Picker" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-1">
@@ -119,6 +119,6 @@ export default function Index({teams, leagues}: IndexProps) {
 
                 </div>
             </div>
-        </AppLayout>
+        </AppTeamPickerLayout>
     );
 }

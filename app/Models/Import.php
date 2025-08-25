@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Import extends Model
 {
+    protected $table = 'api_lookups';
+
     protected $fillable = [
-        'type',
+        'endpoint',
         'response',
+        'lookup_at',
     ];
 }

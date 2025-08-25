@@ -3,6 +3,8 @@
 namespace App\Imports;
 
 use App\Services\Api\FootballDataApiClient;
+use App\Services\Api\Response;
+use App\Services\ApiHelper;
 use App\Imports\ImportTypeInterface;
 use App\Models\Competition;
 use App\Models\Team;
@@ -11,10 +13,19 @@ class TeamsImport implements ImportTypeInterface
 {
 
     protected $apiService;
+    protected $apiResponseService;
+    protected $apiHelper;
 
-    public function __construct(FootballDataApiClient $footballDataApiClient)
+    public function __construct(
+        FootballDataApiClient $footballDataApiClient, 
+        ApiHelper $apiHelper,
+        Response $apiResponseService
+    )
     {
         $this->apiService = $footballDataApiClient;
+        $this->apiHelper = $apiHelper;
+        $this->apiResponseService = $apiResponseService;
+        
     }
 
     public function fetch(): array
@@ -23,7 +34,11 @@ class TeamsImport implements ImportTypeInterface
         $leagues = Competition::where('type', 'league')
             ->get(['id', 'api_id']);
 
-        return $this->apiService->getTeams($leagues);
+        $response = $this->apiService->getTeams($leagues);
+
+        $this->apiResponseService->store('teams', $response);
+
+
     }
 
     public function process($data): void

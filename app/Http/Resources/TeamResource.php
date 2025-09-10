@@ -22,6 +22,7 @@ class TeamResource extends JsonResource
             'name' => $this->name,
             'price' => $this->price,
             'formatted_price' => $this->formatted_price,
+            'league_id' => $this->league->id,
             'league' => $this->league->name,
             'country' => $this->league->country,
             'fixtures' => FixtureResource::collection($this->fixtures()->get()),

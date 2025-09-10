@@ -47,13 +47,14 @@ export type Competition = {
     name: string
     type: string
     country: string
-    api_id: number
+    api_id: number,
+    badge: string | ''
 }
 
 export type Team = {
     id: number
     name: string
-    league: string
+    league: Competition
     country: string
     price: number
     formatted_price: string

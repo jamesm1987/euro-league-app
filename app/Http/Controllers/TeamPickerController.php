@@ -29,9 +29,11 @@ class TeamPickerController extends Controller
             ->toArray();
         
         return Inertia::render('teams-picker', [
-            'teams' => $teams,
+            'leagueTeams' => $teams,
             'leagues' => $leagues,
         ]);
+
+        dd($teams);
 
     }
 }
